@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Astronomia Indígena no Brasil — céu, constelações, povos, território e conhecimentos astronômicos em uma experiência interativa.">
+  <meta name="theme-color" content="#050811">
+  <title>Astronomia Indígena no Brasil</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <div id="stars" aria-hidden="true"></div>
+  <div class="reading-progress" id="readingProgress"></div>
+
+  <header class="site-header" id="top">
+    <a class="brand" href="#inicio" aria-label="Astronomia Indígena Brasil">
+      <span class="brand-mark"><i class="fa-solid fa-star"></i></span>
+      <span><strong>Astronomia Indígena</strong><small>Brasil</small></span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <nav class="main-nav" id="mainNav" aria-label="Navegação principal">
+      <a href="#inicio">Início</a>
+      <a href="#ceu">O céu</a>
+      <a href="#povos">Povos</a>
+      <a href="#constelacoes">Constelações</a>
+      <a href="#territorios">Territórios</a>
+      <a href="#linha-do-tempo">História</a>
+      <a href="#fontes">Fontes</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Alternar tema"><i class="fa-solid fa-moon"></i></button>
+      <button class="icon-btn" id="exploreToggle" aria-label="Ativar modo explorar" title="Modo explorar"><i class="fa-solid fa-compass"></i></button>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero section" id="inicio">
+      <div class="hero-copy reveal">
+        <p class="eyebrow"><span></span> ASTRONOMIA CULTURAL • BRASIL</p>
+        <h1>O céu também<br>é <em>território.</em></h1>
+        <p class="hero-text">Uma experiência digital para conhecer diferentes formas indígenas de observar, interpretar e viver o céu — sem reduzir culturas diversas a uma única astronomia.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#constelacoes">Explorar o céu <i class="fa-solid fa-arrow-down"></i></a>
+          <button class="btn btn-ghost" id="soundToggle"><i class="fa-solid fa-volume-xmark"></i> Som ambiente</button>
+        </div>
+        <div class="hero-facts">
+          <div><strong>5</strong><span>regiões do Brasil</span></div>
+          <div><strong>3+</strong><span>povos em destaque</span></div>
+          <div><strong>∞</strong><span>formas de olhar o céu</span></div>
+        </div>
+      </div>
+
+      <div class="hero-sky" aria-hidden="true">
+        <div class="milky-way"></div>
+        <div class="hero-orbit orbit-a"></div>
+        <div class="hero-orbit orbit-b"></div>
+        <div class="hero-planet planet-a"></div>
+        <div class="hero-planet planet-b"></div>
+        <div class="hero-glow"></div>
+        <div class="sky-label"><span></span> CÉU NOTURNO • BRASIL</div>
+      </div>
+    </section>
+
+    <section class="section intro-section" id="ceu">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 01 — O CÉU</p>
+        <h2>Antes dos telescópios,<br><em>já existiam muitos céus.</em></h2>
+      </div>
+      <div class="intro-grid">
+        <div class="big-statement reveal">O céu não é apenas um conjunto de estrelas. Ele pode ser <em>calendário, orientação, memória, narrativa e relação com a natureza.</em></div>
+        <div class="body-copy reveal">
+          <p>Não existe uma única “astronomia indígena”. Povos diferentes constroem interpretações próprias do céu, ligadas às suas línguas, territórios, histórias, práticas e formas de viver.</p>
+          <p>O MAST destaca que essas cosmopercepções não precisam coincidir com a astronomia ocidental para serem sistemas de conhecimento significativos e consistentes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section sky-lab" id="mapa-celeste">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 02 — MAPA CELESTE</p>
+        <h2>Um céu para <em>explorar.</em></h2>
+        <p>Arraste, aproxime e clique nos pontos destacados. A visualização é educativa e não pretende substituir uma carta celeste científica de alta precisão.</p>
+      </div>
+      <div class="celestial-card reveal">
+        <div class="celestial-toolbar">
+          <div class="celestial-title"><span class="live-dot"></span><span id="skyModeLabel">CÉU INTERATIVO</span></div>
+          <div class="toolbar-actions">
+            <button class="mini-btn" id="skyZoomOut" aria-label="Afastar">−</button>
+            <button class="mini-btn" id="skyReset" aria-label="Reiniciar céu">1×</button>
+            <button class="mini-btn" id="skyZoomIn" aria-label="Aproximar">+</button>
+          </div>
+        </div>
+        <div class="celestial-stage" id="celestialStage">
+          <div class="celestial-grid"></div>
+          <div class="galaxy-band"></div>
+          <svg class="constellation-svg" viewBox="0 0 1000 560" preserveAspectRatio="none" aria-label="Constelações educativas">
+            <g class="constellation constellation-guaxu" data-constellation="guaxu">
+              <path d="M240 300 L310 230 L385 270 L450 190 L520 240 L570 180"/>
+              <path d="M310 230 L350 345 L450 330 L520 240"/>
+              <circle cx="240" cy="300" r="7"/><circle cx="310" cy="230" r="7"/><circle cx="385" cy="270" r="7"/><circle cx="450" cy="190" r="7"/><circle cx="520" cy="240" r="7"/><circle cx="570" cy="180" r="7"/><circle cx="350" cy="345" r="7"/><circle cx="450" cy="330" r="7"/>
+              <text x="405" y="380">GUAXU • VEADO</text>
+            </g>
+            <g class="constellation constellation-onca" data-constellation="onca">
+              <path d="M650 335 L705 265 L760 300 L825 230 L885 270 L920 350 L850 390 L760 370 L705 265"/>
+              <circle cx="650" cy="335" r="7"/><circle cx="705" cy="265" r="7"/><circle cx="760" cy="300" r="7"/><circle cx="825" cy="230" r="7"/><circle cx="885" cy="270" r="7"/><circle cx="920" cy="350" r="7"/><circle cx="850" cy="390" r="7"/><circle cx="760" cy="370" r="7"/>
+              <text x="790" y="435">ONÇA • TIKUNA</text>
+            </g>
+          </svg>
+          <div class="sky-stars" id="skyStars"></div>
+          <button class="sky-hotspot" style="left:38%;top:45%" data-constellation="guaxu" aria-label="Ver Guaxu">✦</button>
+          <button class="sky-hotspot" style="left:77%;top:56%" data-constellation="onca" aria-label="Ver interpretação Tikuna">✦</button>
+          <div class="sky-coordinates">N 05° • S 34° &nbsp; | &nbsp; céu simbólico educativo</div>
+        </div>
+        <div class="celestial-info" id="celestialInfo">
+          <span class="info-kicker">SELECIONE UMA CONSTELAÇÃO</span>
+          <h3>O céu como linguagem</h3>
+          <p>Clique em um dos destaques para conhecer uma interpretação documentada em pesquisas e ações educativas do MAST.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section people-section" id="povos">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 03 — POVOS</p>
+        <h2>Conhecimentos em <em>contexto.</em></h2>
+        <p>Os exemplos abaixo foram selecionados a partir de pesquisas e ações educativas do Museu de Astronomia e Ciências Afins (MAST).</p>
+      </div>
+      <div class="people-grid">
+        <article class="people-card reveal" data-search="Guarani Mbya astronomia céu Guaxu">
+          <div class="people-image guarani-image"><span>GUARANI MBYA</span></div>
+          <div class="people-body"><span class="card-number">01</span><h3>Guarani Mbya</h3><p>Pesquisas do MAST relacionam fenômenos celestes, meteorológicos, tempo, rituais e organização sociocultural.</p><button class="text-btn person-more" data-person="guarani">Explorar perfil <i class="fa-solid fa-arrow-right"></i></button></div>
+        </article>
+        <article class="people-card reveal" data-search="Tikuna Ticuna astronomia céu Worecu Onça Tamandua">
+          <div class="people-image tikuna-image"><span>TIKUNA</span></div>
+          <div class="people-body"><span class="card-number">02</span><h3>Tikuna</h3><p>O céu aparece associado a estações, festas e narrativas com a Onça, o Tamanduá, a Tartaruga e outros asterismos.</p><button class="text-btn person-more" data-person="tikuna">Explorar perfil <i class="fa-solid fa-arrow-right"></i></button></div>
+        </article>
+        <article class="people-card reveal" data-search="Tembé astronomia cultural povo indígena">
+          <div class="people-image tembe-image"><span>TEMBÉ</span></div>
+          <div class="people-body"><span class="card-number">03</span><h3>Tembé</h3><p>O MAST também desenvolve ações de Astronomia Cultural que colocam diferentes cosmopercepções em diálogo.</p><button class="text-btn person-more" data-person="tembe">Explorar perfil <i class="fa-solid fa-arrow-right"></i></button></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section constellations-section" id="constelacoes">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 04 — CONSTELAÇÕES</p>
+        <h2>Não é só ligar <em>pontos.</em></h2>
+      </div>
+      <div class="constellation-feature reveal">
+        <div class="constellation-art">
+          <div class="constellation-lines"></div>
+          <div class="const-star s1"></div><div class="const-star s2"></div><div class="const-star s3"></div>
+          <div class="const-star s4"></div><div class="const-star s5"></div><div class="const-star s6"></div>
+          <div class="feature-caption">GUAXU</div>
+        </div>
+        <div class="feature-copy">
+          <span class="card-number">GUARANI MBYA</span>
+          <h3>Guaxu — o Veado</h3>
+          <p>Segundo material educativo do MAST, Guaxu representa o outono para os Guarani Mbya. Sua região no céu engloba áreas que correspondem a constelações ocidentais como Cruzeiro do Sul, Vela, Mosca e Carina.</p>
+          <div class="quote-card">Para os Guarani Mbya, importantes constelações podem estar associadas às manchas claras e escuras da Via-Láctea, e não apenas à união de estrelas.</div>
+          <a class="source-link" href="https://www.gov.br/mast/pt-br/assuntos/noticias/2021/abril/diversidade-entre-os-povos-indigenas" target="_blank" rel="noopener">Ler a fonte no MAST <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section moon-section" id="calendario">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 05 — LUA & TEMPO</p>
+        <h2>Um calendário que <em>se move.</em></h2>
+      </div>
+      <div class="moon-lab reveal">
+        <div class="moon-visual-wrap">
+          <div class="moon" id="moonVisual"><div class="moon-crater c1"></div><div class="moon-crater c2"></div><div class="moon-crater c3"></div><div class="moon-crater c4"></div><div class="moon-crater c5"></div></div>
+          <span class="moon-phase-label" id="moonPhaseLabel">Lua cheia</span>
+        </div>
+        <div class="moon-controls">
+          <button class="phase-btn active" data-phase="full">Cheia</button>
+          <button class="phase-btn" data-phase="new">Nova</button>
+          <button class="phase-btn" data-phase="waxing">Crescente</button>
+          <button class="phase-btn" data-phase="waning">Minguante</button>
+          <div class="moon-note"><i class="fa-solid fa-circle-info"></i><p>As relações entre Lua, tempo, estações e práticas variam conforme cada povo. O objetivo aqui é apresentar a ideia de observação do céu sem generalizar uma única tradição.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section sun-section">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 06 — SOL</p>
+        <h2>O caminho aparente do <em>Sol.</em></h2>
+      </div>
+      <div class="sun-lab reveal">
+        <div class="sun-sky">
+          <div class="sun-orbit"></div>
+          <div class="sun-object" id="sunObject"></div>
+          <div class="horizon"></div>
+          <span class="sun-label dawn">AMANHECER</span>
+          <span class="sun-label noon">MEIO DO CÉU</span>
+          <span class="sun-label dusk">ENTARDECER</span>
+        </div>
+        <div class="sun-controls">
+          <input id="sunSlider" type="range" min="0" max="100" value="50" aria-label="Posição do Sol">
+          <div class="sun-readout"><span>Posição aparente</span><strong id="sunTime">12:00</strong></div>
+          <p>Observar o movimento aparente do Sol pode contribuir para orientação e percepção de ciclos sazonais. O significado cultural dessas observações depende de cada povo e território.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section territory-section" id="territorios">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 07 — TERRITÓRIO</p>
+        <h2>Brasil em <em>perspectiva.</em></h2>
+        <p>Mapa interativo baseado na malha de Unidades da Federação disponibilizada pelo IBGE. Clique em um estado para destacá-lo.</p>
+      </div>
+      <div class="real-map-card reveal">
+        <div class="map-top"><div><span class="map-status"><span class="status-dot"></span> MALHA GEOGRÁFICA • IBGE</span><h3>Estados do Brasil</h3></div><button id="mapReset" class="map-reset">Brasil inteiro</button></div>
+        <div id="brazilMap" class="brazil-map" aria-label="Mapa interativo dos estados do Brasil"></div>
+        <div class="map-info" id="mapInfo"><strong>Brasil</strong><span>26 estados + Distrito Federal</span></div>
+        <div class="map-source">Fonte cartográfica: <a href="https://www.ibge.gov.br/geociencias/organizacao-do-territorio/malhas-territoriais.html" target="_blank" rel="noopener">IBGE — Malhas Territoriais</a></div>
+      </div>
+    </section>
+
+    <section class="section timeline-section" id="linha-do-tempo">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 08 — LINHA DO TEMPO</p>
+        <h2>Registros, pesquisas e <em>diálogos.</em></h2>
+      </div>
+      <div class="timeline reveal">
+        <div class="timeline-line"></div>
+        <article class="timeline-item"><span class="timeline-year">SÉCULOS XVI–XVIII</span><div><h3>Primeiros registros coloniais</h3><p>Relatos de viajantes registraram observações de estrelas e práticas astronômicas de povos indígenas, embora esses registros precisem ser lidos criticamente.</p></div></article>
+        <article class="timeline-item"><span class="timeline-year">ANOS 1980+</span><div><h3>Astronomia Cultural</h3><p>Consolidação de um campo interdisciplinar que aproxima astronomia, antropologia, história, arqueoastronomia e outras áreas.</p></div></article>
+        <article class="timeline-item"><span class="timeline-year">2015</span><div><h3>“Céu Tikuna” no MAST</h3><p>Exposição e ações educativas apresentam interpretações Tikuna do céu e materiais produzidos a partir de pesquisas de campo.</p></div></article>
+        <article class="timeline-item"><span class="timeline-year">2023</span><div><h3>Tikuna no Stellarium</h3><p>Interpretações do céu Tikuna foram incorporadas ao software Stellarium, ampliando o acesso a essas representações.</p></div></article>
+        <article class="timeline-item"><span class="timeline-year">2025</span><div><h3>Três povos em destaque</h3><p>O MAST apresenta ações educativas relacionadas a Guarani Mbya, Tikuna e Tembé em uma perspectiva de educação intercultural.</p></div></article>
+      </div>
+    </section>
+
+    <section class="section gallery-section" id="galeria">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 09 — GALERIA</p>
+        <h2>Imagens com <em>origem e crédito.</em></h2>
+        <p>As imagens abaixo usam arquivos do Wikimedia Commons com licença indicada nas respectivas páginas. O crédito permanece visível para facilitar a atribuição.</p>
+      </div>
+      <div class="gallery-grid">
+        <figure class="gallery-item large reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mbya%20Guarani%20boys.jpg?width=1100" alt="Meninos Mbya Guarani sobre um riacho" loading="lazy">
+          <figcaption><strong>Mbya Guarani</strong><span>Foto: Tubby3 • CC BY-SA 4.0 • Wikimedia Commons</span></figcaption>
+        </figure>
+        <figure class="gallery-item reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Young%20Tikuna%20girl%20from%20the%20Wotchima%C3%BCc%C3%BC%20indigenous%20community%20in%20a%20feathered%20headdress.jpg?width=900" alt="Jovem Tikuna em traje tradicional" loading="lazy">
+          <figcaption><strong>Tikuna</strong><span>Arquivo: Wikimedia Commons • licença indicada na página do arquivo</span></figcaption>
+        </figure>
+        <figure class="gallery-item reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Opy%20mbya%20guarani.jpg?width=900" alt="Opy, casa de oração Mbya Guarani" loading="lazy">
+          <figcaption><strong>Opy Mbya Guarani</strong><span>Foto: Veronica Romero Jachuka • licença indicada na página do arquivo</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section search-section" id="pesquisa">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 10 — PESQUISA</p>
+        <h2>Procure dentro do <em>site.</em></h2>
+      </div>
+      <div class="search-box reveal">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="siteSearch" type="search" placeholder="Pesquise por povo, constelação, Lua, território..." aria-label="Pesquisar no site">
+        <kbd>Ctrl K</kbd>
+      </div>
+      <div class="filter-row reveal">
+        <button class="filter-btn active" data-filter="all">Tudo</button>
+        <button class="filter-btn" data-filter="povos">Povos</button>
+        <button class="filter-btn" data-filter="ceu">Céu</button>
+        <button class="filter-btn" data-filter="territorio">Território</button>
+      </div>
+      <div id="searchResults" class="search-results" aria-live="polite"></div>
+    </section>
+
+    <section class="section references-section" id="fontes">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span></span> 11 — REFERÊNCIAS</p>
+        <h2>De onde vêm as <em>informações?</em></h2>
+      </div>
+      <div class="references-grid reveal">
+        <a href="https://www.gov.br/mast/pt-br/assuntos/noticias/2021/abril/diversidade-entre-os-povos-indigenas" target="_blank" rel="noopener"><span>MAST</span><strong>Diversidade entre os Povos Indígenas</strong><small>Guarani Mbya • Guaxu</small><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a href="https://www.gov.br/mast/pt-br/assuntos/noticias/2023/abril/no-abril-indigena-conheca-a-interpretacao-tikuna-do-ceu" target="_blank" rel="noopener"><span>MAST</span><strong>Interpretação Tikuna do céu</strong><small>Stellarium • constelações</small><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a href="https://www.gov.br/mast/pt-br/projetos-de-pesquisa/coordenacao-de-historia-da-ciencia-e-tecnologia-cohct/cosmo-tempo-e-representacao-elementos-de-astronomia-guarani-mbya" target="_blank" rel="noopener"><span>MAST</span><strong>Cosmo, tempo e representação</strong><small>Astronomia Guarani Mbya</small><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a href="https://www.gov.br/mast/pt-br/assuntos/noticias/2025/abril/dia-nacional-dos-povos-indigenas" target="_blank" rel="noopener"><span>MAST</span><strong>Dia Nacional dos Povos Indígenas</strong><small>Guarani Mbya • Tikuna • Tembé</small><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a href="https://www.ibge.gov.br/geociencias/organizacao-do-territorio/malhas-territoriais.html" target="_blank" rel="noopener"><span>IBGE</span><strong>Malhas Territoriais</strong><small>Base cartográfica do mapa</small><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <a href="https://commons.wikimedia.org/wiki/Category:Mbya_Guarani" target="_blank" rel="noopener"><span>COMMONS</span><strong>Categoria Mbya Guarani</strong><small>Imagens e licenças</small><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div><strong>Astronomia Indígena <em>Brasil</em></strong><p>Conhecer o céu também é reconhecer a diversidade de formas de conhecer o mundo.</p></div>
+    <div class="footer-links"><a href="#inicio">Voltar ao topo ↑</a><a href="#fontes">Referências</a></div>
+    <small>Projeto educacional • 2026</small>
+  </footer>
+
+  <div class="modal" id="contentModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" data-close-modal aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+      <span class="eyebrow" id="modalKicker">POVO</span>
+      <h2 id="modalTitle"></h2>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="explore-overlay" id="exploreOverlay" aria-hidden="true">
+    <div class="explore-panel">
+      <button class="modal-close" id="closeExplore" aria-label="Fechar modo explorar"><i class="fa-solid fa-xmark"></i></button>
+      <span class="eyebrow">MODO EXPLORAR</span>
+      <h2>Uma apresentação em <em>5 passos.</em></h2>
+      <p>Use as setas ou clique nos marcadores para navegar pelo conteúdo principal durante uma apresentação escolar.</p>
+      <div class="explore-step"><span id="exploreCount">1 / 5</span><h3 id="exploreTitle">O céu</h3><p id="exploreText"></p></div>
+      <div class="explore-controls"><button id="explorePrev">← Anterior</button><button id="exploreNext">Próximo →</button></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
